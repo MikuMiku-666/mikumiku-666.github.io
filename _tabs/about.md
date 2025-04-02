@@ -4,6 +4,8 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-Undergraduate Student now studying in XMU!
+Undergraduate Student now studying at School of Information and Engineering, Xiamen University!
 
-**Email:** lizheyan@stu.xmu.edu.cn
+**My Email:** lizheyan@stu.xmu.edu.cn
+
+
