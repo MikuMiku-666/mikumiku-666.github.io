@@ -1,0 +1,26 @@
+---
+import { url } from '../../lib/urls';
+interface Props {
+  src: string;
+  poster?: string;
+  caption?: string;
+  type?: string;
+}
+const { src, poster, caption, type = 'video/mp4' } = Astro.props;
+---
+
+<figure class="media-block">
+  <video
+    controls
+    playsinline
+    preload="metadata"
+    poster={poster ? url(poster) : undefined}
+    aria-label={caption || '文章视频'}
+  >
+    <source src={url(src)} type={type} />
+    <p>
+      当前浏览器无法播放此视频，<a href={url(src)}>下载视频</a>后查看。
+    </p>
+  </video>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

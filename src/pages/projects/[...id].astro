@@ -1,0 +1,62 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { getProjects, readingTime } from '../../lib/content';
+import { url, entryUrl } from '../../lib/urls';
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, index) => ({
+    params: { id: project.id },
+    props: { project, next: projects[index + 1] || projects[index - 1] },
+  }));
+}
+interface Props {
+  project: CollectionEntry<'projects'>;
+  next?: CollectionEntry<'projects'>;
+}
+const { project, next } = Astro.props;
+const { Content, headings } = await render(project);
+---
+
+<ArticleLayout
+  {...project.data}
+  category={project.data.status}
+  tags={[...project.data.stack, ...project.data.tags]}
+  kind="projects"
+  minutes={readingTime(project.body)}
+  headings={headings}
+  next={next ? { title: next.data.title, href: entryUrl('projects', next.id) } : undefined}
+>
+  <div slot="actions" class="project-actions">
+    {project.data.repository && (
+      <a
+        class="button button-primary"
+        href={project.data.repository}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Icon name="github" size={17} />
+        查看源码
+      </a>
+    )}
+    {project.data.link && (
+      <a
+        class="button button-secondary"
+        href={project.data.link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        访问项目 <Icon name="external" size={17} />
+      </a>
+    )}
+  </div>
+  <img
+    class="project-detail-cover"
+    src={url(project.data.cover)}
+    alt={`${project.data.title}预览`}
+    width="640"
+    height="380"
+  />
+  <Content />
+</ArticleLayout>

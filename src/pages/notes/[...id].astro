@@ -1,0 +1,28 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getNotes, readingTime } from '../../lib/content';
+import { entryUrl } from '../../lib/urls';
+export async function getStaticPaths() {
+  const notes = await getNotes();
+  return notes.map((note, index) => ({
+    params: { id: note.id },
+    props: { note, next: notes[index + 1] || notes[index - 1] },
+  }));
+}
+interface Props {
+  note: CollectionEntry<'notes'>;
+  next?: CollectionEntry<'notes'>;
+}
+const { note, next } = Astro.props;
+const { Content, headings } = await render(note);
+---
+
+<ArticleLayout
+  {...note.data}
+  minutes={readingTime(note.body)}
+  headings={headings}
+  next={next ? { title: next.data.title, href: entryUrl('notes', next.id) } : undefined}
+>
+  <Content />
+</ArticleLayout>

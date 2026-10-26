@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteRow from '../../components/NoteRow.astro';
+import Icon from '../../components/Icon.astro';
+import { getNotes } from '../../lib/content';
+const notes = await getNotes();
+const categories = [...new Set(notes.map((note) => note.data.category))];
+---
+
+<BaseLayout title="笔记">
+  <section class="page-heading container">
+    <div class="eyebrow">
+      THE NOTEBOOK <span class="pink-text">/ 01</span>
+    </div>
+    <h1>
+      记下来，就有了形状<span class="heading-dot pink-dot"></span>
+    </h1>
+    <p>学习的片段、思考的过程，还有那些值得留住的灵感。</p>
+  </section>
+  <section class="container archive-section" data-archive>
+    <div class="archive-toolbar">
+      <div class="filter-chips" aria-label="按分类筛选">
+        <button class="filter-chip active" data-filter="" aria-pressed="true">
+          全部 <span>{notes.length}</span>
+        </button>
+        {categories.map((category) => (
+          <button class="filter-chip" data-filter={category} aria-pressed="false">
+            {category}
+          </button>
+        ))}
+      </div>
+      <label class="archive-search">
+        <Icon name="search" size={17} />
+        <input type="search" data-archive-search placeholder="找一篇笔记…" aria-label="搜索笔记" />
+      </label>
+    </div>
+    <p class="archive-count" data-archive-count role="status">
+      共 {notes.length} 篇笔记 · 按时间排序
+    </p>
+    <div class="archive-list">
+      {notes.map((note, index) => (
+        <div
+          data-archive-item
+          data-category={note.data.category}
+          data-search={`${note.data.title} ${note.data.description} ${note.data.tags.join(' ')}`}
+        >
+          <NoteRow note={note} index={index} />
+        </div>
+      ))}
+    </div>
+    <p class="empty-state" data-empty hidden>
+      这里暂时没有笔记，换个关键词或分类试试。
+    </p>
+    <div class="archive-end">
+      <span>✳</span> {notes.length ? '写一点，离想清楚近一点。' : '从第一篇笔记开始。'}
+    </div>
+  </section>
+</BaseLayout>

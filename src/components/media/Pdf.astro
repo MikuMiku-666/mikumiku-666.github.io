@@ -1,0 +1,19 @@
+---
+import { url } from '../../lib/urls';
+import Icon from '../Icon.astro';
+interface Props {
+  src: string;
+  title: string;
+}
+const { src, title } = Astro.props;
+---
+
+<figure class="media-block">
+  <iframe class="pdf-frame" src={url(src)} title={title} loading="lazy"></iframe>
+  <a class="file-link" href={url(src)} target="_blank" rel="noopener noreferrer">
+    <Icon name="book" size={22} />
+    <strong>{title}</strong>
+    <span>打开 PDF ↗</span>
+  </a>
+  <p class="pdf-note">若浏览器不支持内嵌预览，请点击上方链接打开或下载文档。</p>
+</figure>

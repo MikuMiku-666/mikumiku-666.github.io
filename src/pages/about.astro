@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroArt from '../components/HeroArt.astro';
+import Icon from '../components/Icon.astro';
+import { siteConfig } from '../config';
+import { url } from '../lib/urls';
+---
+
+<BaseLayout title="关于">
+  <section class="page-heading container">
+    <div class="eyebrow">
+      BEHIND THE WORDS <span class="pink-text">/ 03</span>
+    </div>
+    <h1>
+      留一点空间，给自己<span class="heading-dot peach-dot"></span>
+    </h1>
+    <p>关于这个小站，和它想记录的日常。</p>
+  </section>
+  <section class="about-layout container">
+    <div class="about-copy">
+      <span class="category-label pink">HELLO THERE</span>
+      <h2>你好，我是{siteConfig.author}。</h2>
+      <p class="about-lead">{siteConfig.bio}</p>
+      <h3>为什么叫「{siteConfig.name}」？</h3>
+      <p>
+        不是所有的空白都需要立刻填满。留白，是为新的想法留一个位置，也提醒自己：慢慢来，持续做。
+      </p>
+      <h3>你会在这里看到什么</h3>
+      <ul class="about-topics">
+        <li>
+          <span class="topic-dot green-dot"></span>
+          <div>
+            <strong>学习与笔记</strong>
+            <p>把刚学会的东西说清楚，也把踩过的坑记下来。</p>
+          </div>
+        </li>
+        <li>
+          <span class="topic-dot pink-dot"></span>
+          <div>
+            <strong>项目与实践</strong>
+            <p>从一个模糊的想法开始，记录把它做出来的过程。</p>
+          </div>
+        </li>
+        <li>
+          <span class="topic-dot peach-dot"></span>
+          <div>
+            <strong>日常与灵感</strong>
+            <p>读到的好句子、偶然的发现，和一些未完成的思考。</p>
+          </div>
+        </li>
+      </ul>
+      <div class="about-contact">
+        {siteConfig.github && (
+          <a
+            class="button button-primary"
+            href={siteConfig.github}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="github" size={18} />
+            我的 GitHub
+          </a>
+        )}
+        {siteConfig.email && (
+          <a class="button button-secondary" href={`mailto:${siteConfig.email}`}>
+            <Icon name="mail" size={18} />
+            写封邮件
+          </a>
+        )}
+        <a class="text-link" href={url('/notes/')}>
+          先从一篇笔记开始 <Icon name="arrow" size={18} />
+        </a>
+      </div>
+    </div>
+    <div class="about-art">
+      <HeroArt />
+      <blockquote>
+        让记录成为习惯，
+        <br />
+        让好奇保持新鲜。
+      </blockquote>
+      <p class="eyebrow">A SMALL CORNER OF THE INTERNET</p>
+    </div>
+  </section>
+</BaseLayout>

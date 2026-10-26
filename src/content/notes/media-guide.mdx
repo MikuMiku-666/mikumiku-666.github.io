@@ -1,0 +1,103 @@
+---
+title: Markdown 不止于文字：图片、视频与 PDF
+description: 一份可以边看边用的写作示例，让截图、演示视频和文档自然地成为文章的一部分。
+date: 2026-10-24
+category: 动手实践
+tags: [Markdown, 写作指南, 多媒体]
+demo: true
+---
+
+import Video from '../../components/media/Video.astro';
+import Pdf from '../../components/media/Pdf.astro';
+
+文字适合讲清思路，图片适合展示细节，视频适合演示过程，PDF 适合附上完整资料。这篇示例把它们放在一起，作为以后写作时的参考。
+
+## 写好 Markdown 的基本结构
+
+用标题分段，用列表整理步骤，用引用强调一小段话。不要为了样式给每句话加粗，让重点自然出现。
+
+```markdown
+## 这次学到了什么
+
+这是一段普通文字，其中有一个 **关键结论**。
+
+- 写下问题
+- 解释解决过程
+- 附上验证结果
+
+> 给未来的自己，留一句提醒。
+```
+
+表格适合比较少量信息：
+
+| 内容       | 推荐格式        | 使用场景       |
+| ---------- | --------------- | -------------- |
+| 思路与过程 | Markdown        | 日常学习笔记   |
+| 截图与图解 | PNG / JPG / SVG | 展示细节       |
+| 项目演示   | MP4             | 操作与动画     |
+| 完整资料   | PDF             | 报告与阅读材料 |
+
+## 插入一张图片
+
+把图片放入 `public/images/`，写作时从 `/images/` 开始引用。部署到 GitHub Pages 的仓库路径会自动补齐。
+
+![保持好奇、写下思考、动手分享](/images/learning-map.svg)
+
+```markdown
+![图片说明](/images/learning-map.svg)
+```
+
+也支持文章旁的相对路径图片。图片较多时，建议按文章分文件夹，文件名尽量有含义。
+
+## 嵌入一段视频
+
+下面是随框架附带的本地演示片段，不依赖外部视频网站。播放器提供播放、暂停、进度与全屏控制。
+
+<Video
+  src="/media/demo.mp4"
+  poster="/images/learning-map.svg"
+  caption="一段 4 秒的本地示例视频 · 用你自己的项目演示替换它"
+/>
+
+在 `.mdx` 文章中，导入一次组件就能使用：
+
+```mdx
+import Video from '../../components/media/Video.astro';
+
+<Video src="/media/demo.mp4" caption="我的项目演示" />
+```
+
+视频放在 `public/media/`。较大的视频可以托管到视频平台或对象存储，再填写完整的视频文件地址。
+
+## 附上一份 PDF
+
+下方文档同样随项目附带。桌面浏览器通常可以直接预览；移动设备或不支持预览的浏览器可以通过链接打开。
+
+<Pdf src="/media/example.pdf" title="留白 · 示例项目说明" />
+
+```mdx
+import Pdf from '../../components/media/Pdf.astro';
+
+<Pdf src="/media/example.pdf" title="项目报告" />
+```
+
+## 纯 Markdown 也可以
+
+如果不需要组件，普通 `.md` 文件也可以直接使用 HTML：
+
+```html
+<video controls playsinline preload="metadata" src="/media/demo.mp4"></video>
+
+<iframe src="/media/example.pdf" title="项目报告" width="100%" height="500"></iframe>
+
+<a href="/media/example.pdf">下载 PDF</a>
+```
+
+同站的链接、图片，以及这些带引号的 HTML 地址，都会适配 GitHub Pages 的仓库路径。代码块中的示例保持原样。
+
+## 发布之前的小检查
+
+- [x] 图片有能描述内容的替代文字。
+- [x] 视频由读者主动播放，不自动发声。
+- [x] PDF 有单独的打开链接。
+- [ ] 把本篇的示例内容替换成你的第一篇真实笔记。

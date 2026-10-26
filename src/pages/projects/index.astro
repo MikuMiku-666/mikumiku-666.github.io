@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects } from '../../lib/content';
+const projects = await getProjects();
+const statuses = [...new Set(projects.map((project) => project.data.status))];
+---
+
+<BaseLayout title="项目">
+  <section class="page-heading container">
+    <div class="eyebrow">
+      THE WORKBENCH <span class="green-text">/ 02</span>
+    </div>
+    <h1>
+      想法落地的地方<span class="heading-dot green-dot"></span>
+    </h1>
+    <p>一些动手的尝试。从一个「如果可以」，到一个看得见的小作品。</p>
+  </section>
+  <section class="container archive-section" data-archive>
+    <div class="archive-toolbar">
+      <div class="filter-chips" aria-label="按项目状态筛选">
+        <button class="filter-chip active" data-filter="" aria-pressed="true">
+          全部作品 <span>{projects.length}</span>
+        </button>
+        {statuses.map((status) => (
+          <button class="filter-chip" data-filter={status} aria-pressed="false">
+            {status}
+          </button>
+        ))}
+      </div>
+      <span class="quiet-label">每一个开始，都值得记录 ↗</span>
+    </div>
+    <p class="archive-count" data-archive-count role="status">
+      共 {projects.length} 个项目
+    </p>
+    <div class="project-grid">
+      {projects.map((project) => (
+        <div data-archive-item data-category={project.data.status} data-search={project.data.title}>
+          <ProjectCard project={project} />
+        </div>
+      ))}
+    </div>
+    <p class="empty-state" data-empty hidden>
+      这个分类还没有项目，想法正在酝酿中。
+    </p>
+    <div class="archive-end">
+      <span>✦</span> 下一个想法，会是什么？
+    </div>
+  </section>
+</BaseLayout>

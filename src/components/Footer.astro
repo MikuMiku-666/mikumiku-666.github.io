@@ -1,0 +1,44 @@
+---
+import { siteConfig } from '../config';
+import { url } from '../lib/urls';
+import Icon from './Icon.astro';
+---
+
+<footer class="site-footer container">
+  <div>
+    <a class="footer-name" href={url('/')}>
+      {siteConfig.name}
+      <span class="small-spark" aria-hidden="true">
+        ✳
+      </span>
+    </a>
+    <p>保持好奇，慢慢来。</p>
+  </div>
+  <div class="footer-end">
+    <div class="footer-links">
+      {siteConfig.github && (
+        <a href={siteConfig.github} target="_blank" rel="noopener noreferrer">
+          <Icon name="github" size={15} />
+          GitHub
+        </a>
+      )}
+      {siteConfig.email && (
+        <a href={`mailto:${siteConfig.email}`}>
+          <Icon name="mail" size={15} />
+          联系我
+        </a>
+      )}
+      <a href={url('/rss.xml')}>
+        <Icon name="rss" size={15} />
+        RSS 订阅
+      </a>
+      <a href="#top" aria-label="回到页面顶部">
+        回到顶部 ↑
+      </a>
+    </div>
+    <p>
+      © {new Date().getFullYear()} {siteConfig.name} <span>·</span> Built with Astro <span>·</span>{' '}
+      Made with curiosity
+    </p>
+  </div>
+</footer>

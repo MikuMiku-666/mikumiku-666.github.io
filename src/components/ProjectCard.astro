@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url, entryUrl } from '../lib/urls';
+import Icon from './Icon.astro';
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+const { project } = Astro.props;
+---
+
+<a class="project-card" href={entryUrl('projects', project.id)}>
+  <div class="project-cover">
+    <img
+      src={url(project.data.cover)}
+      alt={`${project.data.title}项目预览`}
+      loading="lazy"
+      width="640"
+      height="380"
+    />
+    <span class:list={['status-badge', { completed: project.data.status === '已完成' }]}>
+      <span></span>
+      {project.data.status}
+    </span>
+  </div>
+  <div class="project-info">
+    <div class="project-heading">
+      <h3>{project.data.title}</h3>
+      <Icon name="external" size={21} />
+    </div>
+    <p>{project.data.description}</p>
+    <div class="stack-tags">
+      {project.data.stack.map((item) => (
+        <span>{item}</span>
+      ))}
+      {project.data.demo && <span class="demo-label">示例项目</span>}
+    </div>
+  </div>
+</a>

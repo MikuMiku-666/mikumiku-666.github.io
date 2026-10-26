@@ -1,0 +1,58 @@
+---
+import { siteConfig } from '../config';
+import { url } from '../lib/urls';
+import Icon from './Icon.astro';
+const pathname = Astro.url.pathname;
+const navigation = [
+  ['/', '首页'],
+  ['/notes/', '笔记'],
+  ['/projects/', '项目'],
+  ['/about/', '关于'],
+];
+---
+
+<header class="site-header container">
+  <a class="brand" href={url('/')} aria-label={`${siteConfig.name}，返回首页`}>
+    <span class="brand-symbol" aria-hidden="true">
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <span>
+      {siteConfig.name}
+      <small>NOTES & BUILDS</small>
+    </span>
+  </a>
+  <nav aria-label="主导航">
+    {navigation.map(([href, label]) => {
+      const active = href === '/' ? pathname === url('/') : pathname.startsWith(url(href));
+      return (
+        <a href={url(href)} class:list={{ active }} aria-current={active ? 'page' : undefined}>
+          {label}
+          <span aria-hidden="true"></span>
+        </a>
+      );
+    })}
+  </nav>
+  <div class="header-actions">
+    <button
+      class="search-trigger"
+      data-open-search
+      aria-label="搜索笔记与项目"
+      aria-haspopup="dialog"
+    >
+      <Icon name="search" size={17} />
+      <span>搜索</span>
+      <kbd data-shortcut>Ctrl K</kbd>
+    </button>
+    <button class="icon-button theme-toggle" data-theme-toggle aria-label="切换深色模式">
+      <span class="moon-icon">
+        <Icon name="moon" size={18} />
+      </span>
+      <span class="sun-icon">
+        <Icon name="sun" size={18} />
+      </span>
+    </button>
+  </div>
+</header>

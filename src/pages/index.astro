@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroArt from '../components/HeroArt.astro';
+import NoteRow from '../components/NoteRow.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Icon from '../components/Icon.astro';
+import { siteConfig } from '../config';
+import { getNotes, getProjects } from '../lib/content';
+import { url } from '../lib/urls';
+const [notes, projects] = await Promise.all([getNotes(), getProjects()]);
+---
+
+<BaseLayout>
+  <section class="hero container">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span class="tiny-star">✳</span> LEARN, BUILD, AND A LITTLE WONDER
+      </div>
+      <h1>
+        {siteConfig.hero.firstLine}
+        <br />
+        <span>{siteConfig.hero.secondLine}</span>
+        <i class="title-dot" aria-hidden="true"></i>
+      </h1>
+      <p>{siteConfig.hero.introduction}</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href={url('/notes/')}>
+          翻开笔记 <Icon name="arrow" size={17} />
+        </a>
+        <a class="text-link" href={url('/projects/')}>
+          看看小作品 <Icon name="external" size={18} />
+        </a>
+      </div>
+      <div class="hero-footnote">
+        <span class="live-dot"></span> 文字记录成长，作品回应好奇{' '}
+        <span class="footnote-line"></span> EST. {siteConfig.startYear}
+      </div>
+    </div>
+    <HeroArt />
+  </section>
+  <div class="intro-strip container">
+    <span>一个不急着填满的个人空间</span>
+    <span>
+      笔记 <b>{String(notes.length).padStart(2, '0')}</b>
+      <i>/</i> 作品 <b>{String(projects.length).padStart(2, '0')}</b>
+      <span class="strip-spark">✦</span>
+    </span>
+  </div>
+  <section class="notes-section container section-space" aria-labelledby="recent-notes">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">THE NOTEBOOK</div>
+        <h2 id="recent-notes">
+          最近写下的<span class="heading-dot pink-dot"></span>
+        </h2>
+      </div>
+      <a class="text-link" href={url('/notes/')}>
+        所有笔记 <Icon name="arrow" size={17} />
+      </a>
+    </div>
+    <div class="home-notes-grid">
+      <div class="note-list">
+        {notes.slice(0, 3).map((note, index) => (
+          <NoteRow note={note} index={index} />
+        ))}
+        {!notes.length && <p class="empty-state">第一篇笔记，正在路上。</p>}
+      </div>
+      <aside class="home-aside">
+        <div class="about-note">
+          <span class="hand-star" aria-hidden="true">
+            ✳
+          </span>
+          <div class="eyebrow">A NOTE TO YOU</div>
+          <h3>
+            你好，很高兴
+            <br />
+            在这里遇见你。
+          </h3>
+          <p>{siteConfig.bio}</p>
+          <a class="text-link" href={url('/about/')}>
+            认识这个小站 <Icon name="external" size={16} />
+          </a>
+        </div>
+        <div class="aside-caption">
+          <span>✦</span> 不必完美，先开始记录。
+        </div>
+      </aside>
+    </div>
+  </section>
+  <section class="projects-section container section-space" aria-labelledby="selected-projects">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">THE WORKBENCH</div>
+        <h2 id="selected-projects">
+          把想法做出来<span class="heading-dot green-dot"></span>
+        </h2>
+      </div>
+      <a class="text-link" href={url('/projects/')}>
+        所有项目 <Icon name="arrow" size={17} />
+      </a>
+    </div>
+    <div class="project-grid">
+      {projects.slice(0, 2).map((project) => (
+        <ProjectCard project={project} />
+      ))}
+      {!projects.length && <p class="empty-state">给下一个想法，留一个位置。</p>}
+    </div>
+  </section>
+  <section class="closing-note container">
+    <span class="closing-spark" aria-hidden="true">
+      ✺
+    </span>
+    <div>
+      <div class="eyebrow">ALWAYS A WORK IN PROGRESS</div>
+      <h2>慢慢积累，也是一种前进。</h2>
+      <p>下一篇笔记，下一个小项目。这里会一直生长。</p>
+    </div>
+    <a href={url('/rss.xml')} class="text-link">
+      订阅更新 <Icon name="rss" size={17} />
+    </a>
+  </section>
+</BaseLayout>

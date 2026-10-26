@@ -1,0 +1,103 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { siteConfig } from '../config';
+import { formatDate } from '../lib/content';
+import { url } from '../lib/urls';
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  category: string;
+  tags: string[];
+  minutes: number;
+  kind?: 'notes' | 'projects';
+  headings: { depth: number; slug: string; text: string }[];
+  demo?: boolean;
+  updated?: Date;
+  next?: { title: string; href: string };
+}
+const {
+  title,
+  description,
+  date,
+  category,
+  tags,
+  minutes,
+  headings,
+  kind = 'notes',
+  demo,
+  updated,
+  next,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} article>
+  <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
+  <div class="article-container">
+    <a class="article-back" href={url(`/${kind}/`)}>
+      <Icon name="arrow" size={16} />
+      回到{kind === 'notes' ? '笔记本' : '工作台'}
+    </a>
+    <header class="article-header">
+      <div class="note-meta">
+        <span class="category-label pink">{category}</span>
+        {demo && <span class="demo-label">示例内容 · 可替换为你的内容</span>}
+      </div>
+      <h1>{title}</h1>
+      <p class="article-description">{description}</p>
+      <div class="article-byline">
+        <span class="article-author-mark" aria-hidden="true">
+          ✳
+        </span>
+        <span>{siteConfig.author}</span>
+        <span>·</span>
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <span>·</span>
+        <span>约 {minutes} 分钟阅读</span>
+      </div>
+      <slot name="actions" />
+    </header>
+    <div class="article-grid">
+      <div>
+        <article class="prose">
+          <slot />
+        </article>
+        <div class="article-bottom">
+          <div class="stack-tags">
+            {tags.map((tag) => (
+              <span>#{tag}</span>
+            ))}
+          </div>
+          {updated && <p class="article-updated">最后更新于 {formatDate(updated)}</p>}
+          {next && (
+            <a class="article-next" href={next.href}>
+              <div>
+                <small>接着翻一页 / READ NEXT</small>
+                <strong>{next.title}</strong>
+              </div>
+              <Icon name="arrow" size={19} />
+            </a>
+          )}
+        </div>
+      </div>
+      {headings.some((heading) => heading.depth === 2 || heading.depth === 3) && (
+        <aside class="table-of-contents" aria-label="本文目录">
+          <div class="toc-title">本页内容 / ON THIS PAGE</div>
+          <ul>
+            {headings
+              .filter((heading) => heading.depth === 2 || heading.depth === 3)
+              .map((heading) => (
+                <li class:list={{ 'toc-sub': heading.depth === 3 }}>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </li>
+              ))}
+          </ul>
+          <div class="toc-footer">
+            <a href="#top">回到顶部 ↑</a>
+          </div>
+        </aside>
+      )}
+    </div>
+  </div>
+</BaseLayout>
