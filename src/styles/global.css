@@ -22,17 +22,17 @@
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #1b201d;
-  --surface: #232a25;
-  --text: #e4e8de;
-  --muted: #a2aa9d;
-  --line: #374039;
+  --bg: #111111;
+  --surface: #1b1b1b;
+  --text: #e8e8e8;
+  --muted: #a3a3a3;
+  --line: #333333;
   --green: #b2c9a0;
-  --green-soft: #303e30;
-  --pink: #413035;
+  --green-soft: #262626;
+  --pink: #30282c;
   --pink-ink: #e1aebb;
-  --peach: #41382b;
-  --blue: #2c3942;
+  --peach: #302b25;
+  --blue: #282c30;
   --shadow: 0 18px 60px #0002;
   background: var(--bg);
   color: var(--text);
@@ -1527,6 +1527,9 @@ button {
 .search-dialog::backdrop {
   background: #20281f66;
   backdrop-filter: blur(4px);
+}
+[data-theme='dark'] .search-dialog::backdrop {
+  background: #0009;
 }
 .search-dialog-header {
   display: flex;
